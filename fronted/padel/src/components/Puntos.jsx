@@ -1,10 +1,19 @@
 import { useState } from 'react';
+import axios from 'axios';
+import Global from '../Global';
+import { useEffect } from 'react';
 
 function Puntos() {
+	// Game { idTeam1: '' idTeam2: '' sets: [ { set: 1, points: 2, totalPoints: { team1: 30, team2: 0}, finished: false } ] }
+
+	const url = Global.url;
+
 	const [result1, setResult1] = useState({ set1: 0, set2: 0, set3: 0, totalPoints: 0 });
 	const [result2, setResult2] = useState({ set1: 0, set2: 0, set3: 0, totalPoints: 0 });
 	const [disabled, setDisabled] = useState(false);
 	const [victory, setVictory] = useState({ show: false, Message: '' });
+	const [error, setError] = useState('');
+	const [isLoadling, setIsLoadling] = useState(false);
 
 	function handleClickOne() {
 		setResult1({ ...result1, totalPoints: result1.totalPoints + 15 });
@@ -23,6 +32,30 @@ function Puntos() {
 			setDisabled(true);
 			return setVictory({ show: true, Message: 'VICTORYYYYYYY' });
 		}
+		
+		setIsLoadling(true);
+		axios
+			.post(url + '/score', {
+				idTeam1: '',
+				idTeam2: '',
+				sets: [
+					{
+						set: 1,
+						points: 2,
+						totalPoints: { team1: result1.totalPoints, team2: result2.totalPoints },
+						finished: false,
+					},
+				],
+			})
+			.then(() => {
+				setIsLoadling(false);
+				console.log('datos enviados');
+			})
+			.catch((err) => {
+				setError(err.message);
+				setIsLoadling(false);
+				console.error('Error ', err.message);
+			});
 	}
 	function deleteClickA() {
 		setResult1({ ...result1, totalPoints: result1.totalPoints - 15 });

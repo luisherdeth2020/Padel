@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 const app = express();
 
 const port = 3900;
+const cors = require('cors');
 
 // conectar a MongoDB (Base de datos)
 let url = 'mongodb://localhost:27017/api_rest_reactscore';
@@ -23,7 +24,7 @@ let score_routes = require('./routes/score');
 app.use(bodyParser.urlencoded({ extended: false }));
 //convertir cualquierp petición al tipo JSON
 app.use(bodyParser.json());
-
+app.use(cors({ origin: 'http://127.0.0.1:5173', methods: ['GET', 'POST', 'PUT'] }));
 // Activamos el CORS para permitir las peticiones AJAX y HTTP desde el Frontend
 // cors es para proteger qué otras páginas no autorizados soliciten datos a tu backend
 app.use((req, res, next) => {
