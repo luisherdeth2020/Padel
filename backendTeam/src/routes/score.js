@@ -10,7 +10,7 @@ let router = express.Router();
 
 // Rutas para el score
 
-router.post('/save', Score.save);
+router.post('/score', Score.save);
 
 router.get('/score', Score.getScore);
 

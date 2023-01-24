@@ -4,9 +4,7 @@ import Global from '../Global';
 import { useEffect } from 'react';
 
 function Puntos() {
-	// Game { idTeam1: '' idTeam2: '' sets: [ { set: 1, points: 2, totalPoints: { team1: 30, team2: 0}, finished: false } ] }
-
-	const url = Global.url;
+	// const url = Global.url;
 
 	const [result1, setResult1] = useState({ set1: 0, set2: 0, set3: 0, totalPoints: 0 });
 	const [result2, setResult2] = useState({ set1: 0, set2: 0, set3: 0, totalPoints: 0 });
@@ -15,7 +13,45 @@ function Puntos() {
 	const [error, setError] = useState('');
 	const [isLoadling, setIsLoadling] = useState(false);
 
-	function handleClickOne() {
+	useEffect(() => {
+		(async () => {
+			const data = {
+				idTeam1: '',
+				idTeam2: '',
+				sets: [
+					{
+						Aset1: result1.set1,
+						Aset2: result1.set2,
+						Bset1: result2.set1,
+						Bset2: result2.set2,
+						totalPoints: { team1: result1.totalPoints, team2: result2.totalPoints },
+						finished: false,
+					},
+				],
+			};
+			console.log(data)
+			if (isLoadling) {
+				await axios
+					.post('http://localhost:3900/api/score', data)
+
+					.then(() => {
+						setIsLoadling(false);
+					})
+					.catch((err) => {
+						setError(err.message);
+						setIsLoadling(false);
+						console.error('Error ', err.message);
+					});
+				setIsLoadling(false);
+			}
+		})();
+	}, [result1,result2]);
+
+	// async function hans() {}
+
+	async function handleClickOne() {
+		setIsLoadling(true);
+		// await hans();
 		setResult1({ ...result1, totalPoints: result1.totalPoints + 15 });
 		if (result1.totalPoints >= 30) {
 			setResult1({ ...result1, totalPoints: result1.totalPoints + 10 });
@@ -25,37 +61,17 @@ function Puntos() {
 			setResult2({ ...result2, totalPoints: 0 });
 		}
 
-		if (result1.set1 === 2 && result1.totalPoints === 40) {
-			setResult1({ ...result1, set2: result1.set2 + 1, totalPoints: 0 });
-		}
+		// console.log('cuando es SET1 ' + setResult1(result1));
 		if (result1.set1 === 2 && result1.set2 === 1 && result1.totalPoints === 40) {
+			setResult1({ ...result1, set2: 2, totalPoints: 0 });
+
 			setDisabled(true);
 			return setVictory({ show: true, Message: 'VICTORYYYYYYY' });
 		}
-		
-		setIsLoadling(true);
-		axios
-			.post(url + '/score', {
-				idTeam1: '',
-				idTeam2: '',
-				sets: [
-					{
-						set: 1,
-						points: 2,
-						totalPoints: { team1: result1.totalPoints, team2: result2.totalPoints },
-						finished: false,
-					},
-				],
-			})
-			.then(() => {
-				setIsLoadling(false);
-				console.log('datos enviados');
-			})
-			.catch((err) => {
-				setError(err.message);
-				setIsLoadling(false);
-				console.error('Error ', err.message);
-			});
+		if (result1.set1 === 2 && result1.totalPoints === 40) {
+			setResult1({ ...result1, set2: result1.set2 + 1, totalPoints: 0 });
+		}
+		// console.log('cuando es SET2 ' + setResult1(result1));
 	}
 	function deleteClickA() {
 		setResult1({ ...result1, totalPoints: result1.totalPoints - 15 });
@@ -66,8 +82,10 @@ function Puntos() {
 			setResult1({ ...result1 });
 		}
 	}
-
-	function handleClickTwo() {
+	async function handleClickTwo() {
+		setIsLoadling(true);
+		// await hans();
+		
 		setResult2({ ...result2, totalPoints: result2.totalPoints + 15 });
 		if (result2.totalPoints === 30) {
 			setResult2({ ...result2, totalPoints: result2.totalPoints + 10 });
@@ -81,6 +99,8 @@ function Puntos() {
 			setResult2({ ...result2, set2: result2.set2 + 1, totalPoints: 0 });
 		}
 		if (result2.set1 === 2 && result2.set2 === 1 && result2.totalPoints === 40) {
+			setResult2({ ...result2, set2: 2, totalPoints: 0 });
+
 			setDisabled(true);
 			return setVictory({ show: true, Message: 'VICTORYYYYYYY' });
 		}
@@ -172,3 +192,6 @@ function Puntos() {
 	);
 }
 export default Puntos;
+
+// context
+// lt -h https://hiddenloop.dev -p 3900

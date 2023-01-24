@@ -11,11 +11,13 @@ let controller = {
 	save: (req, res) => {
 		// req = recoger
 		let params = req.body;
+		console.log(params)
+		let score = new Score(params);
 		// vamos a guardar el OBJETO
-		let score = new Score();
+		// let score = new Score();
 		
         // Asignamos valores:
-		score.score = params.score;
+		// score.score = params.score;
 
 		// save esquema generado
 		score.save((err, scoreStored) => {
