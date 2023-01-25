@@ -1,15 +1,19 @@
 'use strict';
 
 const mongoose = require('mongoose');
-mongoose.set('strictQuery', false);
-let Schema = mongoose.Schema;
-
-let ScoreSchema = new Schema({
-	idTeam1: { type: 'string' },
-	idTeam2: { type: 'string' },
-	sets: { type: Array, required: true },
-	
+const scoreSchema = new mongoose.Schema({
+	idTeam1: String,
+	idTeam2: String,
+	sets: [
+		{
+			Aset1: Number,
+			Aset2: Number,
+			Bset1: Number,
+			Bset2: Number,
+			totalPoints: { team1: Number, team2: Number },
+			finished: Boolean,
+		},
+	],
 });
-
-
-module.exports = mongoose.model('Score', ScoreSchema);
+const Score = mongoose.model('score', scoreSchema);
+module.exports = Score;

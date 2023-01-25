@@ -6,3 +6,5 @@ app.js
 database.js
 .env
 crys
+.gitignore
+fronted/padel/src/Global.jsx

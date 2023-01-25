@@ -2,7 +2,7 @@
 
 let express = require('express');
 
-let Score = require('../controllers/score');
+let Score = require('../src/controllers/score');
 
 // Llamamos al objeto router de express
 

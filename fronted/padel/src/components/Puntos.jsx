@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import axios from 'axios';
-import Global from '../Global';
 import { useEffect } from 'react';
 
 function Puntos() {
@@ -29,7 +28,7 @@ function Puntos() {
 					},
 				],
 			};
-			console.log(data)
+			// console.log(data);
 			if (isLoadling) {
 				await axios
 					.post('http://localhost:3900/api/score', data)
@@ -45,7 +44,7 @@ function Puntos() {
 				setIsLoadling(false);
 			}
 		})();
-	}, [result1,result2]);
+	}, [result1, result2]);
 
 	// async function hans() {}
 
@@ -53,14 +52,16 @@ function Puntos() {
 		setIsLoadling(true);
 		// await hans();
 		setResult1({ ...result1, totalPoints: result1.totalPoints + 15 });
-		if (result1.totalPoints >= 30) {
+		if (result1.totalPoints === 30) {
 			setResult1({ ...result1, totalPoints: result1.totalPoints + 10 });
 		}
-		if (result1.totalPoints >= 40) {
+		if (result1.totalPoints === 40) {
 			setResult1({ ...result1, set1: result1.set1 + 1, totalPoints: 0 });
 			setResult2({ ...result2, totalPoints: 0 });
 		}
-
+		if (result1.set1 === 2 && result1.totalPoints === 40) {
+			setResult1({ ...result1, set2: result1.set2 + 1, totalPoints: 0 });
+		}
 		// console.log('cuando es SET1 ' + setResult1(result1));
 		if (result1.set1 === 2 && result1.set2 === 1 && result1.totalPoints === 40) {
 			setResult1({ ...result1, set2: 2, totalPoints: 0 });
@@ -68,9 +69,7 @@ function Puntos() {
 			setDisabled(true);
 			return setVictory({ show: true, Message: 'VICTORYYYYYYY' });
 		}
-		if (result1.set1 === 2 && result1.totalPoints === 40) {
-			setResult1({ ...result1, set2: result1.set2 + 1, totalPoints: 0 });
-		}
+
 		// console.log('cuando es SET2 ' + setResult1(result1));
 	}
 	function deleteClickA() {
@@ -85,14 +84,14 @@ function Puntos() {
 	async function handleClickTwo() {
 		setIsLoadling(true);
 		// await hans();
-		
+
 		setResult2({ ...result2, totalPoints: result2.totalPoints + 15 });
 		if (result2.totalPoints === 30) {
 			setResult2({ ...result2, totalPoints: result2.totalPoints + 10 });
 		}
 		if (result2.totalPoints === 40) {
-			setResult2({ ...result2, set1: result2.set1 + 1, totalPoints: 0 });
 			setResult1({ ...result1, totalPoints: 0 });
+			setResult2({ ...result2, set1: result2.set1 + 1, totalPoints: 0 });
 		}
 
 		if (result2.set1 === 2 && result2.totalPoints === 40) {
