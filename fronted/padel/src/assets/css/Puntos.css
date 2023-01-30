@@ -1,0 +1,37 @@
+.bg--table {
+	background-color: #22356f;
+	color: white;
+	min-width: 600px;
+}
+.bgcolor {
+	background-color: #68e0e1 !important;
+	border-width: 0 3px 0 0;
+	border-color: #22356f;
+	color: #22356f;
+	font-weight: bold;
+}
+.bgcolor--resultado {
+	background-color: #fff !important;
+	color: #22356f;
+	font-weight: bold;
+}
+.border-right {
+	border: 2px solid #fff;
+}
+
+.css-button {
+	border-color: #22356f;
+    color: #22356f;
+    font-weight: bold;
+    width: 8rem;
+
+}
+.css-button:hover {
+	background: #22356f;
+	color: #fff;
+}
+.victory {
+    margin: 2rem;
+	color: #22356f;
+    font-weight: bold;
+}

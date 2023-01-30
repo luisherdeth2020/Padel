@@ -5,9 +5,9 @@ import Puntos from './components/Puntos';
 const Router = () => {
 	return (
 		<BrowserRouter>
-			<Header />
 			<Routes>
-				<Route path="/" element={<Puntos/>}/>
+				<Route exact path="/" element={<Header />} />
+				<Route exact path="/marcador" element={<Puntos />} />
 			</Routes>
 		</BrowserRouter>
 	);

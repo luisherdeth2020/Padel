@@ -8,8 +8,7 @@ const {
 } = require('./intents/amazonIntents');
 const { HelloWorldIntentHandler } = require('./intents/HelloWorldIntent');
 const { LaunchRequest } = require('./intents/LaunchIntent');
-
-
+const { YesIntentHandler } = require('./intents/yesIntent');
 
 const createSkill = () => {
 	const skillbuilder = Alexa.SkillBuilders.custom();
@@ -17,6 +16,7 @@ const createSkill = () => {
 		.addRequestHandlers(
 			LaunchRequest,
 			HelloWorldIntentHandler,
+			YesIntentHandler,
 			SessionEndedRequest,
 			HelpIntent,
 			CancelAndStopIntentHandler,
@@ -26,6 +26,5 @@ const createSkill = () => {
 		.withCustomUserAgent('prueba/v1')
 		.create();
 };
-
 
 module.exports = { createSkill };

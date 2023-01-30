@@ -6,11 +6,11 @@ const scoreSchema = new mongoose.Schema({
 	idTeam2: String,
 	sets: [
 		{
-			Aset1: Number,
-			Aset2: Number,
-			Bset1: Number,
-			Bset2: Number,
-			totalPoints: { team1: Number, team2: Number },
+			Equipo1set1: Number,
+			Equipo1set2: Number,
+			Equipo2set1: Number,
+			Equipo2set2: Number,
+			totalPoints: { equipo1: Number, equipo2: Number },
 			finished: Boolean,
 		},
 	],

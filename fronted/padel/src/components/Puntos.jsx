@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
+import { DataContext } from '../context/userContext';
+import '../assets/css/Puntos.css';
 
 function Puntos() {
-	// const url = Global.url;
+	const { names, setNames } = useContext(DataContext);
 
 	const [result1, setResult1] = useState({ set1: 0, set2: 0, set3: 0, totalPoints: 0 });
 	const [result2, setResult2] = useState({ set1: 0, set2: 0, set3: 0, totalPoints: 0 });
@@ -19,11 +21,11 @@ function Puntos() {
 				idTeam2: '',
 				sets: [
 					{
-						Aset1: result1.set1,
-						Aset2: result1.set2,
-						Bset1: result2.set1,
-						Bset2: result2.set2,
-						totalPoints: { team1: result1.totalPoints, team2: result2.totalPoints },
+						Equipo1set1: result1.set1,
+						Equipo1set2: result1.set2,
+						Equipo2set1: result2.set1,
+						Equipo2set2: result2.set2,
+						totalPoints: { equipo1: result1.totalPoints, equipo2: result2.totalPoints },
 						finished: false,
 					},
 				],
@@ -67,7 +69,7 @@ function Puntos() {
 			setResult1({ ...result1, set2: 2, totalPoints: 0 });
 
 			setDisabled(true);
-			return setVictory({ show: true, Message: 'VICTORYYYYYYY' });
+			return setVictory({ show: true, Message: '🏆¡ENHORABUENA!🏆' });
 		}
 
 		// console.log('cuando es SET2 ' + setResult1(result1));
@@ -115,76 +117,84 @@ function Puntos() {
 	}
 	return (
 		<>
-			<table className="table">
+			<table className="table text-uppercase bg--table">
 				<thead>
 					<tr>
-						<th>OCTVOS</th>
-						<th>SET 1</th>
-						<th>SET 2</th>
-						<th>SET 3</th>
-						<th>POINTS</th>
+						<th>Jugadores</th>
+						<th>set 1</th>
+						<th>set 2</th>
+						<th>set 3</th>
+						<th>points</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td>
-							<div className="d-flex flex-column align-items-center">
-								<p>WIKISPAIN</p>
-								<p>COSMO</p>
+						<td className="border-right">
+							<div className="d-flex flex-column align-items-start">
+								<p>{names[0]}</p>
+								<p>{names[1]}</p>
 							</div>
 						</td>
 
-						<td className="align-middle">{result1.set1}</td>
-						<td className="align-middle">{result1.set2}</td>
-						<td className="align-middle">{result1.set3}</td>
-						<td className="align-middle">{result1.totalPoints}</td>
+						<td className="align-middle bgcolor">{result1.set1}</td>
+						<td className="align-middle bgcolor">{result1.set2}</td>
+						<td className="align-middle bgcolor">{result1.set3}</td>
+						<td className="align-middle bgcolor--resultado">{result1.totalPoints}</td>
 					</tr>
 					<tr>
-						<td>
-							<div className="d-flex flex-column align-items-center">
-								<p>HANS</p>
-								<p>TONIC</p>
+						<td className="border-right">
+							<div className="d-flex flex-column align-items-start">
+								<p>{names[2]}</p>
+								<p>{names[3]}</p>
 							</div>
 						</td>
-						<td className="align-middle">{result2.set1}</td>
-						<td className="align-middle">{result2.set2}</td>
-						<td className="align-middle">{result2.set3}</td>
-						<td className="align-middle">{result2.totalPoints}</td>
+						<td className="align-middle bgcolor">{result2.set1}</td>
+						<td className="align-middle bgcolor">{result2.set2}</td>
+						<td className="align-middle bgcolor">{result2.set3}</td>
+						<td className="align-middle bgcolor--resultado">{result2.totalPoints}</td>
 					</tr>
 				</tbody>
 			</table>
 			<div className="d-flex flex-column align-items-center">
-				<h1 className="text-center text-danger">{victory.Message}</h1>
+				<h1 className="text-center victory">{victory.Message}</h1>
 				{victory.show && (
 					<img
 						src="https://i.pinimg.com/originals/ed/3d/b4/ed3db48d311233f99947e2111f6fd1c6.gif"
 						alt="lets gooo"
-						width="40%"
-						height="40%"
 					/>
 				)}
 			</div>
 
-			<div className="container d-flex flex-column align-items-center">
-				<div className="color">
+			<div className="container d-flex text-uppercase flex-column align-items-center">
+				<div>
 					<input
 						disabled={disabled}
-						className="my-3 mx-2"
+						className="my-3 mx-3 css-button text-uppercase"
 						type="button"
-						value="Equipo A"
+						value="sumar a"
 						onClick={handleClickOne}
 					/>
 					<input
 						disabled={disabled}
-						className="my-3 mx-2"
+						className="my-3 mx-3 css-button text-uppercase"
 						type="button"
-						value="Equipo B"
+						value="sumar b"
 						onClick={handleClickTwo}
 					/>
 				</div>
 				<div className="text2">
-					<input className="mx-3" type="button" value="DEL A" onClick={deleteClickA} />
-					<input className="mx-3" type="button" value="DEL B" onClick={deleteClickB} />
+					<input
+						className="mx-3 css-button text-uppercase"
+						type="button"
+						value="restar a"
+						onClick={deleteClickA}
+					/>
+					<input
+						className="mx-3 css-button text-uppercase"
+						type="button"
+						value="restar b"
+						onClick={deleteClickB}
+					/>
 				</div>
 			</div>
 		</>

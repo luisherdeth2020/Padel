@@ -1,0 +1,48 @@
+.container__main {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8rem;
+}
+button {
+	display: block;
+	margin-top: 1rem;
+}
+.participantes {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.participantes__caja {
+	text-align: left;
+}
+.participantes__name {
+	border-bottom: #fce22a 2px solid;
+	text-transform: uppercase;
+}
+
+p {
+	margin: 0;
+	padding: 0.5rem;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+input{
+  color:#373b44;
+}
+.add {
+	background-color: transparent;
+	border: none;
+	border-bottom: #fce22a 2px solid;
+	outline: none;
+}
+.message {
+	margin-top: 1.5rem;
+}
+.message__num {
+	font-weight: bold;
+}
