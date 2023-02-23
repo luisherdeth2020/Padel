@@ -5,3 +5,4 @@
 ## Autores ✒️
 
 * **Luis Herdeth** - [WikiPadel](https://wikipadel.netlify.app)
+* Interacción con Alexa: https://lnkd.in/dAhTThxD
