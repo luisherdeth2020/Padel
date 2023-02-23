@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import axios from 'axios';
+import { NavLink } from 'react-router-dom';
+// import axios from 'axios';
 import { useEffect, useContext } from 'react';
 import { DataContext } from '../context/userContext';
 import '../assets/css/Puntos.css';
@@ -11,68 +12,115 @@ function Puntos() {
 	const [result2, setResult2] = useState({ set1: 0, set2: 0, set3: 0, totalPoints: 0 });
 	const [disabled, setDisabled] = useState(false);
 	const [victory, setVictory] = useState({ show: false, Message: '' });
-	const [error, setError] = useState('');
 	const [isLoadling, setIsLoadling] = useState(false);
 
-	useEffect(() => {
-		(async () => {
-			const data = {
-				idTeam1: '',
-				idTeam2: '',
-				sets: [
-					{
-						Equipo1set1: result1.set1,
-						Equipo1set2: result1.set2,
-						Equipo2set1: result2.set1,
-						Equipo2set2: result2.set2,
-						totalPoints: { equipo1: result1.totalPoints, equipo2: result2.totalPoints },
-						finished: false,
-					},
-				],
-			};
-			// console.log(data);
-			if (isLoadling) {
-				await axios
-					.post('http://localhost:3900/api/score', data)
+	// useEffect(() => {
+	// 	(async () => {
+	// 		const data = {
+	// 			idTeam1: '',
+	// 			idTeam2: '',
+	// 			sets: [
+	// 				{
+	// 					Equipo1set1: result1.set1,
+	// 					Equipo1set2: result1.set2,
+	// 					Equipo2set1: result2.set1,
+	// 					Equipo2set2: result2.set2,
+	// 					totalPoints: { equipo1: result1.totalPoints, equipo2: result2.totalPoints },
+	// 					finished: false,
+	// 				},
+	// 			],
+	// 		};
+	// 		if (isLoadling) {
+	// 			await axios
+	// 				.post('http://localhost:3900/api/score', data)
 
-					.then(() => {
-						setIsLoadling(false);
-					})
-					.catch((err) => {
-						setError(err.message);
-						setIsLoadling(false);
-						console.error('Error ', err.message);
-					});
-				setIsLoadling(false);
-			}
-		})();
-	}, [result1, result2]);
+	// 				.then(() => {
+	// 					setIsLoadling(false);
+	// 				})
+	// 				.catch((err) => {
+	// 					setError(err.message);
+	// 					setIsLoadling(false);
+	// 					console.error('Error ', err.message);
+	// 				});
+	// 			setIsLoadling(false);
+	// 		}
+	// 	})();
+	// }, [result1, result2]);
+	const restablecer = () => {
+		setNames([]);
+	};
 
-	// async function hans() {}
+	const winnerTitle = names.length === 2 ? 'CAMPEÓN' : 'CAMPEONES';
+	const winnerNames1 = names.length === 2 ? `🏆${names[0]}🏆` : `🏆${names[0]} & ${names[1]}🏆`;
+	const winnerNames2 = names.length === 2 ? `🏆${names[1]}🏆` : `🏆${names[2]} & ${names[3]}🏆`;
 
+	const player1Has40Points = result1.totalPoints === 40;
+	const player2Has40Points = result2.totalPoints === 40;
+	const player1WonSet1 = result1.set1 === 6;
+	const player1WonSet2 = result1.set2 === 6;
+	const player2WonSet1 = result2.set1 === 6;
+	const player2WonSet2 = result2.set2 === 6;
+	const player2NotWinGame1 = result2.set1 < 6;
+	const player1NotWinGame1 = result1.set1 < 6;
+	const player1NotWinSet2 = result1.set2 === 5;
+	const player1NotWinSet3 = result1.set3 === 5;
+	const player2NotWinSet2 = result2.set2 === 5;
+	const player2NotWinSet3 = result2.set3 === 5;
+
+	function showVictoryMessage(num) {
+		setVictory({
+			show: true,
+			Message: num === 1 ? winnerNames1 : winnerNames2,
+		});
+	}
 	async function handleClickOne() {
-		setIsLoadling(true);
-		// await hans();
+		// setIsLoadling(true);
+
 		setResult1({ ...result1, totalPoints: result1.totalPoints + 15 });
 		if (result1.totalPoints === 30) {
 			setResult1({ ...result1, totalPoints: result1.totalPoints + 10 });
 		}
-		if (result1.totalPoints === 40) {
+		// ?TODO
+		if (player1WonSet1 && player1NotWinSet2 && player1Has40Points) {
+			setResult1({ ...result1, set2: 6, totalPoints: 0 });
+			setResult2({ ...result2, totalPoints: 0 });
+
+			setDisabled(true);
+			return showVictoryMessage(1);
+		}
+		if (!player1Has40Points) return;
+
+		if (player2NotWinGame1) {
 			setResult1({ ...result1, set1: result1.set1 + 1, totalPoints: 0 });
 			setResult2({ ...result2, totalPoints: 0 });
 		}
-		if (result1.set1 === 2 && result1.totalPoints === 40) {
+		if (player1WonSet1) {
 			setResult1({ ...result1, set2: result1.set2 + 1, totalPoints: 0 });
 		}
-		// console.log('cuando es SET1 ' + setResult1(result1));
-		if (result1.set1 === 2 && result1.set2 === 1 && result1.totalPoints === 40) {
-			setResult1({ ...result1, set2: 2, totalPoints: 0 });
-
-			setDisabled(true);
-			return setVictory({ show: true, Message: '🏆¡ENHORABUENA!🏆' });
+		if (player2WonSet2) {
+			setResult1({ ...result1, set3: result1.set3 + 1, totalPoints: 0 });
+			setResult2({ ...result2, totalPoints: 0 });
+		}
+		if (player2WonSet1) {
+			setResult1({ ...result1, set2: result1.set2 + 1, totalPoints: 0 });
+			setResult2({ ...result2, totalPoints: 0 });
+		}
+		if (player1WonSet2) {
+			setResult1({ ...result1, set3: result1.set3 + 1, totalPoints: 0 });
 		}
 
-		// console.log('cuando es SET2 ' + setResult1(result1));
+		if (player1WonSet2 && player1NotWinSet3) {
+			setResult1({ ...result1, set3: 6, totalPoints: 0 });
+
+			setDisabled(true);
+			return showVictoryMessage(1);
+		}
+		if (player1WonSet1 && player1NotWinSet3) {
+			setResult1({ ...result1, set3: 6, totalPoints: 0 });
+
+			setDisabled(true);
+			return showVictoryMessage(1);
+		}
 	}
 	function deleteClickA() {
 		setResult1({ ...result1, totalPoints: result1.totalPoints - 15 });
@@ -85,27 +133,51 @@ function Puntos() {
 	}
 	async function handleClickTwo() {
 		setIsLoadling(true);
-		// await hans();
 
 		setResult2({ ...result2, totalPoints: result2.totalPoints + 15 });
 		if (result2.totalPoints === 30) {
 			setResult2({ ...result2, totalPoints: result2.totalPoints + 10 });
 		}
-		if (result2.totalPoints === 40) {
-			setResult1({ ...result1, totalPoints: 0 });
+		if (player2Has40Points && player1NotWinGame1) {
 			setResult2({ ...result2, set1: result2.set1 + 1, totalPoints: 0 });
+			setResult1({ ...result1, totalPoints: 0 });
 		}
-
-		if (result2.set1 === 2 && result2.totalPoints === 40) {
+		if (player2WonSet1 && player2Has40Points) {
 			setResult2({ ...result2, set2: result2.set2 + 1, totalPoints: 0 });
 		}
-		if (result2.set1 === 2 && result2.set2 === 1 && result2.totalPoints === 40) {
-			setResult2({ ...result2, set2: 2, totalPoints: 0 });
+		if (player2Has40Points && player1WonSet2) {
+			setResult2({ ...result2, set3: result2.set3 + 1, totalPoints: 0 });
+			setResult1({ ...result1, totalPoints: 0 });
+		}
+
+		if (player2Has40Points && player1WonSet1) {
+			setResult1({ ...result1, totalPoints: 0 });
+			setResult2({ ...result2, set2: result2.set2 + 1, totalPoints: 0 });
+		}
+
+		if (player2WonSet2 && player2Has40Points) {
+			setResult2({ ...result2, set3: result2.set3 + 1, totalPoints: 0 });
+		}
+		if (player2WonSet1 && player2NotWinSet2 && player2Has40Points) {
+			setResult2({ ...result2, set2: 6, totalPoints: 0 });
 
 			setDisabled(true);
-			return setVictory({ show: true, Message: 'VICTORYYYYYYY' });
+			return showVictoryMessage(2);
+		}
+		if (player2WonSet2 && player2NotWinSet3 && player2Has40Points) {
+			setResult2({ ...result2, set3: 6, totalPoints: 0 });
+
+			setDisabled(true);
+			return showVictoryMessage(2);
+		}
+		if (player2WonSet1 && player2NotWinSet3 && player2Has40Points) {
+			setResult2({ ...result2, set3: 6, totalPoints: 0 });
+
+			setDisabled(true);
+			return showVictoryMessage(2);
 		}
 	}
+
 	function deleteClickB() {
 		setResult2({ ...result2, totalPoints: result2.totalPoints - 15 });
 		if (result2.totalPoints === 40) {
@@ -115,6 +187,7 @@ function Puntos() {
 			setResult2({ ...result2 });
 		}
 	}
+
 	return (
 		<>
 			<table className="table text-uppercase bg--table">
@@ -130,9 +203,15 @@ function Puntos() {
 				<tbody>
 					<tr>
 						<td className="border-right">
-							<div className="d-flex flex-column align-items-start">
-								<p>{names[0]}</p>
-								<p>{names[1]}</p>
+							<div className="d-flex text-start">
+								{names.length === 2 ? (
+									<p>{names[0]}</p>
+								) : (
+									<div>
+										<p>{names[0]}</p>
+										<p>{names[1]}</p>
+									</div>
+								)}
 							</div>
 						</td>
 
@@ -143,9 +222,15 @@ function Puntos() {
 					</tr>
 					<tr>
 						<td className="border-right">
-							<div className="d-flex flex-column align-items-start">
-								<p>{names[2]}</p>
-								<p>{names[3]}</p>
+							<div className="d-flex text-start">
+								{names.length === 2 ? (
+									<p>{names[1]}</p>
+								) : (
+									<div>
+										<p>{names[2]}</p>
+										<p>{names[3]}</p>
+									</div>
+								)}
 							</div>
 						</td>
 						<td className="align-middle bgcolor">{result2.set1}</td>
@@ -156,12 +241,16 @@ function Puntos() {
 				</tbody>
 			</table>
 			<div className="d-flex flex-column align-items-center">
-				<h1 className="text-center victory">{victory.Message}</h1>
 				{victory.show && (
-					<img
-						src="https://i.pinimg.com/originals/ed/3d/b4/ed3db48d311233f99947e2111f6fd1c6.gif"
-						alt="lets gooo"
-					/>
+					<>
+						<h3 className="text-center victory">
+							¡{winnerTitle}!<span className="h2 text__message">{victory.Message}</span>
+						</h3>
+						<img
+							src="https://thumbs.gfycat.com/EasygoingComplicatedIndianpalmsquirrel-size_restricted.gif"
+							alt="lets gooo"
+						/>
+					</>
 				)}
 			</div>
 
@@ -169,14 +258,14 @@ function Puntos() {
 				<div>
 					<input
 						disabled={disabled}
-						className="my-3 mx-3 css-button text-uppercase"
+						className="my-3 me-2 mx-sm-3 css-button text-uppercase"
 						type="button"
 						value="sumar a"
 						onClick={handleClickOne}
 					/>
 					<input
 						disabled={disabled}
-						className="my-3 mx-3 css-button text-uppercase"
+						className="my-3 mx-sm-3 css-button text-uppercase"
 						type="button"
 						value="sumar b"
 						onClick={handleClickTwo}
@@ -184,23 +273,23 @@ function Puntos() {
 				</div>
 				<div className="text2">
 					<input
-						className="mx-3 css-button text-uppercase"
+						className="my-3 me-2 mx-sm-3 css-button text-uppercase"
 						type="button"
 						value="restar a"
 						onClick={deleteClickA}
 					/>
 					<input
-						className="mx-3 css-button text-uppercase"
+						className="my-3  mx-sm-3 css-button text-uppercase"
 						type="button"
 						value="restar b"
 						onClick={deleteClickB}
 					/>
 				</div>
 			</div>
+			<NavLink onClick={restablecer} to="/" className="nav-link fs-2 mt-5 button_30" role="button">
+				<span className="text">Inicio</span>
+			</NavLink>
 		</>
 	);
 }
 export default Puntos;
-
-// context
-// lt -h https://hiddenloop.dev -p 3900

@@ -4,7 +4,7 @@ const LaunchRequest = {
 	},
 	handle(handlerInput) {
 		// const speechText = 'Hola, bienvenido a prueba dos.';
-		const speechText = 'Bienvenido Luis Herdeth';
+		const speechText = 'Hola, bienvenido a WIKIPADEL';
 
 		return handlerInput.responseBuilder
 		.speak(speechText)

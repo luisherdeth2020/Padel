@@ -46,3 +46,9 @@ input{
 .message__num {
 	font-weight: bold;
 }
+@media (min-width: 320px) and (max-width: 480px) {
+	.container__main{
+		flex-direction: column;
+		gap:2rem;
+	}
+}

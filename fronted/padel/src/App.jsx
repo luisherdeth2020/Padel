@@ -3,6 +3,14 @@ import Router from './Router';
 import { DataProvider } from './context/userContext';
 
 function App() {
+	let docTitle = document.title;
+	window.addEventListener('blur', () => {
+		document.title = '😭 Come back 😭';
+	});
+
+	window.addEventListener('focus', () => {
+		document.title = docTitle;
+	});
 	return (
 		<DataProvider>
 			<div className="App">
@@ -13,5 +21,3 @@ function App() {
 }
 
 export default App;
-
-// instalar aixios, router dom

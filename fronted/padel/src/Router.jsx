@@ -6,8 +6,8 @@ const Router = () => {
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route exact path="/" element={<Header />} />
-				<Route exact path="/marcador" element={<Puntos />} />
+				<Route path="/" element={<Header />} />
+				<Route path="/marcador" element={<Puntos />} />
 			</Routes>
 		</BrowserRouter>
 	);

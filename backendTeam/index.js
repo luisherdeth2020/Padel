@@ -4,6 +4,7 @@ const ngrok = require('ngrok');
 
 const app = express();
 const port = process.env.PORT || 3900;
+// Model
 const Score = require('./src/models/score');
 app.use('/alexa', require('./routes/alexaRoute'));
 // solicitudes
@@ -13,13 +14,11 @@ const mongoose = require('mongoose');
 
 const cors = require('cors');
 
-
 // URL de conexión a la base de datos, incluyendo las credenciales de autenticación
 let url = 'mongodb+srv://wikispain:Melon123@score.mwxiah9.mongodb.net/?retryWrites=true&w=majority';
 
 // Evita fallos en la conexión
 mongoose.Promise = global.Promise;
-
 
 // Cargamos body-parser, es un middleware para analizar cuerpos a través de la URL
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -39,7 +38,6 @@ mongoose
 		console.log('Error al conectar a la base de datos: ', err);
 	});
 
-
 // Iniciamos el servidor Express
 app.listen(port, async () => {
 	console.log(mongoose.connection.readyState);
@@ -58,4 +56,8 @@ app.post('/api/score', (req, res) => {
 		if (err) return res.status(500).send(err);
 		return res.status(200).send(score);
 	});
+});
+
+app.get('/api/score', (req, res) => {
+	Score.find().then((allScore) => res.json(allScore));
 });

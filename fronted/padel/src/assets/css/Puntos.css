@@ -1,37 +1,45 @@
 .bg--table {
 	background-color: #22356f;
 	color: white;
-	min-width: 600px;
+	width: 100%;
+	max-width: 600px;
 }
 .bgcolor {
 	background-color: #68e0e1 !important;
-	border-width: 0 3px 0 0;
 	border-color: #22356f;
+	border-width: 0 3px 0 0;
 	color: #22356f;
-	font-weight: bold;
+	font-family: 'Poppins', sans-serif;
+	font-weight: 600;
 }
 .bgcolor--resultado {
 	background-color: #fff !important;
 	color: #22356f;
-	font-weight: bold;
+	font-family: 'Poppins', sans-serif;
+	font-weight: 600;
 }
 .border-right {
 	border: 2px solid #fff;
 }
 
 .css-button {
+	color: #22356f;
 	border-color: #22356f;
-    color: #22356f;
-    font-weight: bold;
-    width: 8rem;
-
+	font-weight: bold;
+	width: 8rem;
 }
 .css-button:hover {
 	background: #22356f;
 	color: #fff;
 }
 .victory {
-    margin: 2rem;
 	color: #22356f;
-    font-weight: bold;
+	font-weight: bold;
+	margin: 2rem;
+}
+.text__message {
+	display: block;
+	font-weight: bold;
+	margin-top: 1rem;
+	text-transform: uppercase;
 }
